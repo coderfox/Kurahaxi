@@ -32,15 +32,15 @@ namespace Kurahaxi
                 var occurrences = new Collection<CourseOccurrence>();
                 foreach (var schedule in Schedules)
                 {
-                    var classSpan = schedule.GetClassSpan(School);
+                    var (start, end) = schedule.GetTime(School);
                     for (var today = School.TermStart;
                         today < School.TermStart.AddDays(School.TermWeeks * 7);
                         today = today.AddDays(1))
                     {
                         if (today.DayOfWeek != schedule.Weekday) continue;
                         if (!schedule.Weeks.Contains((today - School.TermStart).Days / 7 + 1)) continue;
-                        var startTime = today + classSpan.Start;
-                        var endTime = today + classSpan.End;
+                        var startTime = today + start;
+                        var endTime = today + end;
                         var occurrence = new CourseOccurrence(startTime, endTime);
                         occurrences.Add(occurrence);
                     }

@@ -34,7 +34,7 @@ namespace Kurahaxi
             var course = new Course(school, "程序设计1", "专必", "陆勇", "东B403",
                 new List<CourseSchedule>(new[]
                 {
-                    new CourseSchedule(DayOfWeek.Monday, 1, doubleWeeks),
+                    new CourseSchedule(DayOfWeek.Monday, 1, 2, doubleWeeks),
                     new CourseSchedule(DayOfWeek.Tuesday, 1, doubleWeeks),
                 }));
 
