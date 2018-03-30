@@ -44,5 +44,10 @@ namespace Kurahaxi
 
         public IEnumerable<(DateTime start, DateTime end)> GetTimes(School school) => GetDates(school).Select(date =>
             (date + GetStartTimeSpan(school), date + GetEndTimeSpan(school)));
+
+        public IEnumerable<int> GetExcludedWeeks(School school)
+        {
+            return Enumerable.Range(1, school.TermWeeks).Where(w => !Weeks.Contains(w));
+        }
     }
 }
