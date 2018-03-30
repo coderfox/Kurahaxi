@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Kurahaxi
 {
@@ -37,6 +38,7 @@ namespace Kurahaxi
                         today = today.AddDays(1))
                     {
                         if (today.DayOfWeek != schedule.Weekday) continue;
+                        if (!schedule.Weeks.Contains((today - School.TermStart).Days / 7 + 1)) continue;
                         var startTime = today + classSpan.Start;
                         var endTime = today + classSpan.End;
                         var occurrence = new CourseOccurrence(startTime, endTime);

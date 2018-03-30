@@ -30,13 +30,12 @@ namespace Kurahaxi
             #endregion
 
             var school = new School("中山大学", DateTime.Parse("2018-03-05"), 20, classSpans);
-            var weeks = Enumerable.Range(1, 20);
-            var weeksArray = weeks as int[] ?? weeks.ToArray();
-            var course = new Course(school, "程序设计1", "专必", "陆勇", "",
+            var doubleWeeks = Enumerable.Range(1, 20).Where(w => w % 2 != 1).ToArray();
+            var course = new Course(school, "程序设计1", "专必", "陆勇", "东B403",
                 new List<CourseSchedule>(new[]
                 {
-                    new CourseSchedule(DayOfWeek.Monday, 5, weeksArray),
-                    new CourseSchedule(DayOfWeek.Monday, 6, weeksArray),
+                    new CourseSchedule(DayOfWeek.Monday, 1, doubleWeeks),
+                    new CourseSchedule(DayOfWeek.Tuesday, 1, doubleWeeks),
                 }));
 
             foreach (var occurrence in course.Occurrences.OrderBy(o => o.Start))
