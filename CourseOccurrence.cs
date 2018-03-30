@@ -4,12 +4,14 @@ namespace Kurahaxi
 {
     public class CourseOccurrence
     {
-        public CourseOccurrence(DateTime start, DateTime end)
+        public CourseOccurrence(Course course, DateTime start, DateTime end)
         {
             Start = start;
             End = end;
+            Course = course;
         }
 
+        public Course Course { get; set; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
 

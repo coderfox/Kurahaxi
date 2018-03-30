@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Kurahaxi
 {
@@ -26,8 +27,22 @@ namespace Kurahaxi
         [Obsolete]
         public ClassSpan GetClassSpan(School school) => school.ClassSpans[ClassNo];
 
-        public (TimeSpan start, TimeSpan end) GetTime(School school) => (GetStartTime(school), GetEndTime(school));
-        public TimeSpan GetStartTime(School school) => school.ClassSpans[ClassNo].Start;
-        public TimeSpan GetEndTime(School school) => school.ClassSpans[ClassNo + ClassLength - 1].End;
+        public (TimeSpan start, TimeSpan end) GetTimeSpan(School school) =>
+            (GetStartTimeSpan(school), GetEndTimeSpan(school));
+        public TimeSpan GetStartTimeSpan(School school) => school.ClassSpans[ClassNo].Start;
+        public TimeSpan GetEndTimeSpan(School school) => school.ClassSpans[ClassNo + ClassLength - 1].End;
+
+        public int GetWeekdayOffset(School school)
+        {
+            var weekdayOffset = Weekday - school.TermStart.DayOfWeek;
+            if (weekdayOffset < 0) weekdayOffset += 7;
+            return weekdayOffset;
+        }
+
+        public IEnumerable<DateTime> GetDates(School school) =>
+            Weeks.Select(w => school.TermStart.AddDays((w - 1) * 7 + GetWeekdayOffset(school)));
+
+        public IEnumerable<(DateTime start, DateTime end)> GetTimes(School school) => GetDates(school).Select(date =>
+            (date + GetStartTimeSpan(school), date + GetEndTimeSpan(school)));
     }
 }

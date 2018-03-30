@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace Kurahaxi
@@ -25,29 +24,11 @@ namespace Kurahaxi
         public string Place { get; set; }
         public IEnumerable<CourseSchedule> Schedules { get; set; }
 
-        public IEnumerable<CourseOccurrence> Occurrences
+        public IEnumerable<CourseOccurrence> Occurrences => Schedules.SelectMany(schedule =>
         {
-            get
-            {
-                var occurrences = new Collection<CourseOccurrence>();
-                foreach (var schedule in Schedules)
-                {
-                    var (start, end) = schedule.GetTime(School);
-                    for (var today = School.TermStart;
-                        today < School.TermStart.AddDays(School.TermWeeks * 7);
-                        today = today.AddDays(1))
-                    {
-                        if (today.DayOfWeek != schedule.Weekday) continue;
-                        if (!schedule.Weeks.Contains((today - School.TermStart).Days / 7 + 1)) continue;
-                        var startTime = today + start;
-                        var endTime = today + end;
-                        var occurrence = new CourseOccurrence(startTime, endTime);
-                        occurrences.Add(occurrence);
-                    }
-                }
-
-                return occurrences;
-            }
-        }
+            var (start, end) = schedule.GetTimeSpan(School);
+            return schedule.GetDates(School).Select(date =>
+                new CourseOccurrence(this, date + start, date + end));
+        });
     }
 }

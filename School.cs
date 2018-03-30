@@ -17,5 +17,7 @@ namespace Kurahaxi
         public IList<ClassSpan> ClassSpans { get; set; }
         public DateTime TermStart { get; set; }
         public int TermWeeks { get; set; }
+        
+        public DateTime TermEnd => TermStart.AddDays(TermWeeks * 7);
     }
 }
